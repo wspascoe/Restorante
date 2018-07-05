@@ -14,6 +14,7 @@ namespace Restorante.Data
             : base(options)
         {
         }
+        public DbSet<Category> Category { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

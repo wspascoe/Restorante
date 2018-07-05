@@ -8,12 +8,14 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     </environment>
 </head>
 <body>
@@ -27,7 +29,7 @@
                         Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Category Type</a>
+                        <a class="dropdown-item" asp-controller="Categories" asp-action="Index">Category</a>
                         <a class="dropdown-item" href="#">Sub Category</a>
                         <a class="dropdown-item" href="#">Menu Items</a>
                         <a class="dropdown-item" href="#">Coupons</a>
@@ -42,6 +44,12 @@
                         <a class="dropdown-item" href="#">Order Pickup</a>
                         <a class="dropdown-item" href="#">Download Order Details</a>
                     </div>
+                </li>
+                <li style="color:white;">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        &nbsp;(0)
+                    </a>
                 </li>
             </ul>
         </div>
