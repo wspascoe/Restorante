@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Restorante</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     </environment>
@@ -31,7 +31,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" asp-controller="Categories" asp-action="Index">Category</a>
                         <a class="dropdown-item" asp-controller="SubCategory" asp-action="Index">Sub Category</a>
-                        <a class="dropdown-item" href="#">Menu Items</a>
+                        <a class="dropdown-item"  asp-controller="MenuItem" asp-action="Index">Menu Items</a>
                         <a class="dropdown-item" href="#">Coupons</a>
                     </div>
                 </li>
