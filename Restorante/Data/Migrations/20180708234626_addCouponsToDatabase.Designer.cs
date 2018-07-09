@@ -11,9 +11,10 @@ using System;
 namespace Restorante.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180708234626_addCouponsToDatabase")]
+    partial class addCouponsToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +210,8 @@ namespace Restorante.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<byte[]>("Picture");
+                    b.Property<byte[]>("Picture")
+                        .IsRequired();
 
                     b.Property<bool>("isActive");
 
