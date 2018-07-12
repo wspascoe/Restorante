@@ -21,7 +21,7 @@ namespace Restorante.Models
         [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please Enter a value greater than {1}")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please Enter a value greater than {0}")]
         public int Count { get; set; }
 
         [NotMapped]

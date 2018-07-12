@@ -43,6 +43,13 @@ namespace Restorante
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +69,7 @@ namespace Restorante
             app.UseStaticFiles();
 
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
