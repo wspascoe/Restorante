@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Restorante.Utility
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -25,7 +27,14 @@
         <a class="navbar-brand" asp-action="Index" asp-controller="Home">Restorante</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
+
+                @if(User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser))
+                {
                 <li class="nav-item"><a class="nav-link" href="#">Order History</a></li>
+                }
+
+                @if(User.IsInRole(SD.AdminEndUser))
+                {
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
@@ -48,12 +57,16 @@
                         <a class="dropdown-item" href="#">Download Order Details</a>
                     </div>
                 </li>
+                }
+                @if(User.IsInRole(SD.AdminEndUser) || User.IsInRole(SD.CustomerEndUser))
+                {
                 <li style="color:white;">
                     <a href="#" class="nav-link">
                         <i class="fas fa-shopping-cart"></i>
                         &nbsp;(0)
                     </a>
                 </li>
+                }
             </ul>
         </div>
         <div class="form-inline">

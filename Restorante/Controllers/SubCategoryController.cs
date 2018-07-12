@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restorante.Data;
 using Restorante.Models;
 using Restorante.Models.SubCategoryViewModel;
+using Restorante.Utility;
 
 namespace Restorante.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class SubCategoryController : Controller
     {
         private readonly ApplicationDbContext _db;

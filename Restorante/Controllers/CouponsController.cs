@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Restorante.Data;
 using Restorante.Models;
+using Restorante.Utility;
 
 namespace Restorante.Controllers
 {
+    [Authorize(Roles = SD.AdminEndUser)]
     public class CouponsController : Controller
     {
         private readonly ApplicationDbContext _db;

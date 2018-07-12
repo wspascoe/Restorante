@@ -32,6 +32,20 @@ namespace Restorante.Controllers
             return View(IndexVM);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var MenuItemFromDB = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).Where(m=> m.Id == id).FirstOrDefaultAsync();
+
+            ShoppingCart CartObj = new ShoppingCart()
+            {
+                MenuItem = MenuItemFromDB,
+                MenuItemId = id,
+            };
+
+            return View(CartObj);
+
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
