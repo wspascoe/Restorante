@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Restorante.Data;
 using Restorante.Models;
 using Restorante.Models.HomeViewModel;
+using Restorante.Utility;
 
 namespace Restorante.Controllers
 {
@@ -25,6 +26,11 @@ namespace Restorante.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //if (User.IsInRole(SD.AdminEndUser))
+            //{
+            //    //return RedirectToAction(nameof(Index));
+            //    return RedirectToAction(nameof(About));
+            //}
             IndexViewModel IndexVM = new IndexViewModel()
             {
                 MenuItem = await _db.MenuItem.Include(m=> m.Category).Include(m=>m.SubCategory).ToListAsync(),
@@ -33,6 +39,11 @@ namespace Restorante.Controllers
             };
 
             return View(IndexVM);
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
 
         [Authorize]

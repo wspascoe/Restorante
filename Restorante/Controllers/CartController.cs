@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restorante.Data;
 using Restorante.Models;
 using Restorante.Models.OrderDetailsViewModels;
+using Restorante.Utility;
 
 namespace Restorante.Controllers
 {
@@ -56,5 +58,83 @@ namespace Restorante.Controllers
 
             return View(detailCart);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Index")]
+        public IActionResult IndexPost() 
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            detailCart.listCart = _db.ShoppingCart.Where(c => c.ApplicationUserId == claim.Value).ToList();
+       
+            detailCart.OrderHeader.OrderDate = DateTime.Now;
+            detailCart.OrderHeader.UserId = claim.Value;
+            detailCart.OrderHeader.Status = SD.StatusSubmitted;
+
+            OrderHeader orderHeader = detailCart.OrderHeader;
+
+            _db.OrderHeader.Add(orderHeader);
+            _db.SaveChanges();
+
+            foreach (var item in detailCart.listCart)
+            {
+                item.MenuItem = _db.MenuItem.FirstOrDefault(m => m.Id == item.MenuItemId);
+                OrderDetails orderDetails = new OrderDetails
+                {
+                    MenuItemId = item.MenuItemId,
+                    OrderId = orderHeader.Id,
+                    Description = item.MenuItem.Description,
+                    Name = item.MenuItem.Name,
+                    Price = item.MenuItem.Price,
+                    Count = item.Count
+                };
+
+                _db.OrderDetails.Add(orderDetails);
+                
+            }
+            _db.ShoppingCart.RemoveRange(detailCart.listCart);
+            _db.SaveChanges();
+            HttpContext.Session.SetInt32("CartCount", 0);
+
+            return RedirectToAction("Home", "Index");
+        }
+
+        public IActionResult Plus( int cartId)
+        {
+            var cart = _db.ShoppingCart.Where(c => c.Id == cartId).FirstOrDefault();
+            cart.Count += 1;
+
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public IActionResult Minus(int cartId)
+        {
+            var cart = _db.ShoppingCart.Where(c => c.Id == cartId).FirstOrDefault();
+
+            if (cart.Count == 1)
+            {
+                _db.ShoppingCart.Remove(cart);
+                _db.SaveChanges();
+
+                var cnt = _db.ShoppingCart.Where(u=>u.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
+                HttpContext.Session.SetInt32("CartCount", cnt);
+            }
+            else
+            {
+                cart.Count -= 1;
+                _db.SaveChanges();
+            }
+            
+            return RedirectToAction(nameof(Index));
+
+        }
+
+
+
     }
 }
