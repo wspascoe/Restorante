@@ -15,6 +15,7 @@ namespace Restorante.Controllers
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private int PageSize = 2;
 
         public OrderController(ApplicationDbContext db)
         {
@@ -37,12 +38,15 @@ namespace Restorante.Controllers
         }
 
         [Authorize]
-        public IActionResult OrderHistory()
+        public IActionResult OrderHistory(int ProductPage = 1)
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            List<OrderDetailViewModel> orderDetailVM = new List<OrderDetailViewModel>();
+            OrderListViewModel OrderListVM = new OrderListViewModel()
+            {
+                Orders = new List<OrderDetailViewModel>()
+            };
 
             List<OrderHeader> OrderHeaderList = _db.OrderHeader.Where(u => u.UserId == claim.Value).OrderByDescending(u => u.OrderDate).ToList();
 
@@ -53,12 +57,25 @@ namespace Restorante.Controllers
                     OrderHeader = item,
                     OrderDetail = _db.OrderDetails.Where(o => o.OrderId == item.Id).ToList()
                 };
-                orderDetailVM.Add(individual);
+                OrderListVM.Orders.Add(individual);
             }
+            var count = OrderListVM.Orders.Count;
 
-            return View(orderDetailVM);
+            OrderListVM.Orders = OrderListVM.Orders.OrderBy(p => p.OrderHeader.Id)
+                .Skip((ProductPage - 1) * PageSize)
+                .Take(PageSize).ToList();
+
+            OrderListVM.PagingInfo = new PagingInfo
+            {
+                CurrentPage = ProductPage,
+                ItemsPerPage = PageSize,
+                TotalItem = count
+            };
+
+
+            return View(OrderListVM);
         }
-
+        
         [Authorize(Roles = SD.AdminEndUser)]
         public IActionResult ManageOrder()
         {
